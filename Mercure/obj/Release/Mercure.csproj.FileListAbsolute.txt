@@ -1,0 +1,7 @@
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\bin\Release\Mercure.exe.config
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\bin\Release\Mercure.exe
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\bin\Release\Mercure.pdb
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\obj\Release\Mercure.Properties.Resources.resources
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\obj\Release\Mercure.csproj.GenerateResource.Cache
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\obj\Release\Mercure.exe
+c:\users\administrateur\documents\visual studio 2012\Projects\Mercure\Mercure\obj\Release\Mercure.pdb
