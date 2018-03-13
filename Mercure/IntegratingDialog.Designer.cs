@@ -33,13 +33,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button2 = new System.Windows.Forms.Button();
+            this.integrateButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.updateRButton = new System.Windows.Forms.RadioButton();
+            this.newRButton = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -74,15 +74,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button2
+            // integrateButton
             // 
-            this.button2.Location = new System.Drawing.Point(116, 184);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Integrater";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.integrateButton.AccessibleRole = System.Windows.Forms.AccessibleRole.Animation;
+            this.integrateButton.Location = new System.Drawing.Point(116, 184);
+            this.integrateButton.Name = "integrateButton";
+            this.integrateButton.Size = new System.Drawing.Size(75, 23);
+            this.integrateButton.TabIndex = 3;
+            this.integrateButton.Text = "Integrate";
+            this.integrateButton.UseVisualStyleBackColor = true;
+            this.integrateButton.Click += new System.EventHandler(this.integrateButton_Click);
             // 
             // button3
             // 
@@ -103,8 +104,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.updateRButton);
+            this.groupBox1.Controls.Add(this.newRButton);
             this.groupBox1.Location = new System.Drawing.Point(15, 59);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(257, 76);
@@ -112,27 +113,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Integration mods";
             // 
-            // radioButton1
+            // updateRButton
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(6, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(192, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "New integration, purge current data";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.updateRButton.AutoSize = true;
+            this.updateRButton.Location = new System.Drawing.Point(7, 43);
+            this.updateRButton.Name = "updateRButton";
+            this.updateRButton.Size = new System.Drawing.Size(58, 17);
+            this.updateRButton.TabIndex = 1;
+            this.updateRButton.Text = "update";
+            this.updateRButton.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // newRButton
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(7, 43);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(58, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "update";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.newRButton.AutoSize = true;
+            this.newRButton.Checked = true;
+            this.newRButton.Location = new System.Drawing.Point(6, 19);
+            this.newRButton.Name = "newRButton";
+            this.newRButton.Size = new System.Drawing.Size(192, 17);
+            this.newRButton.TabIndex = 0;
+            this.newRButton.TabStop = true;
+            this.newRButton.Text = "New integration, purge current data";
+            this.newRButton.UseVisualStyleBackColor = true;
             // 
             // IntegratingDialog
             // 
@@ -142,7 +143,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.integrateButton);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
@@ -162,12 +163,12 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button integrateButton;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton updateRButton;
+        private System.Windows.Forms.RadioButton newRButton;
     }
 }
