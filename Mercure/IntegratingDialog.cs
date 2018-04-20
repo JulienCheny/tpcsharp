@@ -57,7 +57,7 @@ namespace Mercure
             XmlNodeList nodeList = xmlDocument.SelectNodes("/materiels/article");
             
             // open sqlite connection
-            SQLiteConnection sqlite = new SQLiteConnection("Data source=C:/Users/JULIEN/Desktop/Divers/Polytech/tpcsharp/Mercure/Mercure.SQLite");
+            SQLiteConnection sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
             
             sqlite.Open();
             
@@ -89,11 +89,19 @@ namespace Mercure
                 if (refFamille == -1)
                 {
                     addFamille(sqlite, famille);
+                    refFamille = getRefFamille(sqlite, famille);
+                }
+
+                int refSousFamille = getRefSousFamille(sqlite, sousFamille);
+                if (refSousFamille == -1)
+                {
+                    addSousFamille(sqlite, sousFamille, refFamille);
+                    refSousFamille = getRefSousFamille(sqlite, sousFamille);
                 }
 
                 cmd.Parameters.Add(new SQLiteParameter("@RefArticle", refArticle));
                 cmd.Parameters.Add(new SQLiteParameter("@Description", description));
-                cmd.Parameters.Add(new SQLiteParameter("@RefSousFamille", 222));
+                cmd.Parameters.Add(new SQLiteParameter("@RefSousFamille", refSousFamille));
                 cmd.Parameters.Add(new SQLiteParameter("@RefMarque", refMarque));
                 cmd.Parameters.Add(new SQLiteParameter("@PrixHT", prixHT));
                 cmd.Parameters.Add(new SQLiteParameter("@Quantite", 1));
@@ -139,6 +147,27 @@ namespace Mercure
             cmd = sqlite.CreateCommand();
             cmd.CommandText = "SELECT RefFamille FROM Familles WHERE Nom = @famille";
             cmd.Parameters.Add(new SQLiteParameter("@famille", famille));
+            try
+            {
+                Object result = cmd.ExecuteScalar();
+                if (result == null)
+                    return -1;
+                else
+                    return Convert.ToInt32(result);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private int getRefSousFamille(SQLiteConnection sqlite, string sousFamille)
+        {
+            SQLiteCommand cmd;
+            cmd = sqlite.CreateCommand();
+            cmd.CommandText = "SELECT RefSousFamille FROM SousFamilles WHERE Nom = @sousFamille";
+            cmd.Parameters.Add(new SQLiteParameter("@sousFamille", sousFamille));
             try
             {
                 Object result = cmd.ExecuteScalar();
@@ -225,5 +254,43 @@ namespace Mercure
             }
 
         }
+
+        private void addSousFamille(SQLiteConnection sqlite, string nom, int refFamille)
+        {
+            int newRef;
+            SQLiteCommand cmd;
+            cmd = sqlite.CreateCommand();
+            cmd.CommandText = "SELECT MAX(RefSousFamille) FROM SousFamilles";
+            try
+            {
+                object obj = cmd.ExecuteScalar();
+                if (obj.GetType() == typeof(DBNull))
+                    newRef = 1;
+                else
+                    newRef = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
+
+                cmd = sqlite.CreateCommand();
+                cmd.CommandText = "INSERT INTO SousFamilles (RefSousFamille, RefFamille, Nom) values (@RefSousFamille, @RefFamille, @Nom)";
+                cmd.Parameters.Add(new SQLiteParameter("@RefSousFamille", newRef));
+                cmd.Parameters.Add(new SQLiteParameter("@RefFamille", refFamille));
+                cmd.Parameters.Add(new SQLiteParameter("@Nom", nom));
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
     }
 }

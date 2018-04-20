@@ -39,6 +39,14 @@ namespace Mercure
             listView1.Columns.Add("PrixHT", 70);
             listView1.Columns.Add("Quantite", 70);
 
+            refresh();
+        }
+
+        private void refresh()
+        {
+            listView1.Items.Clear();
+            listView1.Update();
+
             //Add items in the listview
             ListViewItem itm;
 
@@ -49,24 +57,26 @@ namespace Mercure
                 itm = new ListViewItem(article);
                 listView1.Items.Add(itm);
             }
+
+            listView1.Refresh();
         }
 
         private List<string[]> getArticles()
         {
             List<string[]> articles = new List<string[]>();
-            SQLiteConnection sqlite = new SQLiteConnection("Data source=C:/Users/JULIEN/Desktop/Divers/Polytech/tpcsharp/Mercure/Mercure.SQLite");
+            SQLiteConnection sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
             sqlite.Open();
             SQLiteCommand cmd;
             cmd = sqlite.CreateCommand();
-            cmd.CommandText = "SELECT * FROM Articles";
+            cmd.CommandText = "SELECT RefArticle, Description, SousFamilles.Nom as NomSousFamille, Marques.Nom as NomMarque, PrixHT, Quantite FROM Articles INNER JOIN Marques ON Articles.RefMarque = Marques.RefMarque INNER JOIN SousFamilles ON SousFamilles.RefSousFamille = Articles.RefSousFamille";
             SQLiteDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 string[] articleArr = new string[6];
                 articleArr[0] = (string)reader["RefArticle"];
                 articleArr[1] = (string)reader["Description"];
-                articleArr[2] = ((int)reader["RefSousFamille"]).ToString();
-                articleArr[3] = ((int)reader["RefMArque"]).ToString();
+                articleArr[2] = (string)reader["NomSousFamille"];
+                articleArr[3] = (string)reader["NomMarque"];
                 articleArr[4] = ((double)reader["PrixHT"]).ToString();
                 articleArr[5] = ((int)reader["Quantite"]).ToString();
                 articles.Add(articleArr);
@@ -80,9 +90,73 @@ namespace Mercure
             {
                 ListViewItem item = listView1.SelectedItems[0];
                 string refArticle = item.SubItems[0].Text;
-                Console.WriteLine(refArticle);
-                ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(refArticle);
-                modifyArticleDial.Show();
+                openUpdateArticleModal(refArticle);
+            }
+        }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (listView1.FocusedItem.Bounds.Contains(e.Location) == true)
+                {
+                    contextMenuStrip1.Show(Cursor.Position);
+                }
+            } 
+        }
+
+        protected override bool ProcessCmdKey (ref Message msg, Keys keyData)
+        {
+            bool bHandled = false;
+            switch (keyData)
+            {
+                case Keys.F5:
+                    refresh();
+                    bHandled = true;
+                    break;
+            }
+            return bHandled;
+        }
+
+        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = listView1.SelectedItems[0];
+            string refArticle = item.SubItems[0].Text;
+            openUpdateArticleModal(refArticle);
+        }
+
+        private void openUpdateArticleModal(string refArticle)
+        {
+            ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(refArticle);
+            DialogResult dialogResult = modifyArticleDial.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+                refresh();
+        }
+
+        private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = listView1.SelectedItems[0];
+            string refArticle = item.SubItems[0].Text;
+
+            var confirmDelete = MessageBox.Show("Voulez vous vraiment supprimer cet article ?", "Comfirmation", MessageBoxButtons.YesNo);
+            if (confirmDelete == DialogResult.Yes)
+            {
+                SQLiteConnection sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
+                sqlite.Open();
+                SQLiteCommand cmd;
+                cmd = sqlite.CreateCommand();
+                cmd.CommandText = "DELETE FROM Articles WHERE RefArticle = @RefArticle";
+                cmd.Parameters.Add(new SQLiteParameter("@RefArticle", refArticle));
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    refresh();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                sqlite.Close();
             }
         }
     }

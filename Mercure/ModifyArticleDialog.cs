@@ -14,7 +14,7 @@ namespace Mercure
     public partial class ModifyArticleDialog : Form
     {
         private string lastRefArticle;
-        private SQLiteConnection sqlite = new SQLiteConnection("Data source=C:/Users/JULIEN/Desktop/Divers/Polytech/tpcsharp/Mercure/Mercure.SQLite");
+        private SQLiteConnection sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
         public class ComboboxItem
         {
             public string Text { get; set; }
