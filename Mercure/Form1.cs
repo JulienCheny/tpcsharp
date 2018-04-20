@@ -54,7 +54,7 @@ namespace Mercure
         private List<string[]> getArticles()
         {
             List<string[]> articles = new List<string[]>();
-            SQLiteConnection sqlite = new SQLiteConnection("Data source=/Dev/c++/tpcsharp/Mercure/Mercure.SQLite");
+            SQLiteConnection sqlite = new SQLiteConnection("Data source=C:/Users/JULIEN/Desktop/Divers/Polytech/tpcsharp/Mercure/Mercure.SQLite");
             sqlite.Open();
             SQLiteCommand cmd;
             cmd = sqlite.CreateCommand();
@@ -81,6 +81,8 @@ namespace Mercure
                 ListViewItem item = listView1.SelectedItems[0];
                 string refArticle = item.SubItems[0].Text;
                 Console.WriteLine(refArticle);
+                ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(refArticle);
+                modifyArticleDial.Show();
             }
         }
     }
