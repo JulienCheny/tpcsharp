@@ -13,8 +13,13 @@ namespace Mercure
 {
     public partial class Form1 : Form
     {
+
+        private SQLiteConnection sqlite;
+
         public Form1()
         {
+            sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
+            sqlite.Open();
             InitializeComponent();
         }
 
@@ -64,8 +69,6 @@ namespace Mercure
         private List<string[]> getArticles()
         {
             List<string[]> articles = new List<string[]>();
-            SQLiteConnection sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
-            sqlite.Open();
             SQLiteCommand cmd;
             cmd = sqlite.CreateCommand();
             cmd.CommandText = "SELECT RefArticle, Description, SousFamilles.Nom as NomSousFamille, Marques.Nom as NomMarque, PrixHT, Quantite FROM Articles INNER JOIN Marques ON Articles.RefMarque = Marques.RefMarque INNER JOIN SousFamilles ON SousFamilles.RefSousFamille = Articles.RefSousFamille";
@@ -127,7 +130,7 @@ namespace Mercure
 
         private void openUpdateArticleModal(string refArticle)
         {
-            ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(refArticle);
+            ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(sqlite, refArticle);
             DialogResult dialogResult = modifyArticleDial.ShowDialog();
             if (dialogResult == DialogResult.OK)
                 refresh();
@@ -141,8 +144,6 @@ namespace Mercure
             var confirmDelete = MessageBox.Show("Voulez vous vraiment supprimer cet article ?", "Comfirmation", MessageBoxButtons.YesNo);
             if (confirmDelete == DialogResult.Yes)
             {
-                SQLiteConnection sqlite = new SQLiteConnection("Data source=Mercure.SQLite");
-                sqlite.Open();
                 SQLiteCommand cmd;
                 cmd = sqlite.CreateCommand();
                 cmd.CommandText = "DELETE FROM Articles WHERE RefArticle = @RefArticle";
@@ -156,8 +157,15 @@ namespace Mercure
                 {
                     throw new Exception(ex.Message);
                 }
-                sqlite.Close();
             }
+        }
+
+        private void ajouterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(sqlite);
+            DialogResult dialogResult = modifyArticleDial.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+                refresh();
         }
     }
 }
