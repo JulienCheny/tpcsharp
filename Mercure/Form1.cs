@@ -128,7 +128,9 @@ namespace Mercure
         private void openUpdateArticleModal(string refArticle)
         {
             ModifyArticleDialog modifyArticleDial = new ModifyArticleDialog(refArticle);
-            modifyArticleDial.Show();
+            DialogResult dialogResult = modifyArticleDial.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+                refresh();
         }
 
         private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
