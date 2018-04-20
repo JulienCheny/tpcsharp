@@ -70,7 +70,8 @@ namespace Mercure
                 string marque = node.SelectSingleNode("marque").InnerText;
                 string famille = node.SelectSingleNode("famille").InnerText;
                 string sousFamille = node.SelectSingleNode("sousFamille").InnerText;
-                double prixHT = Math.Round(float.Parse(node.SelectSingleNode("prixHT").InnerText.Replace(",", ".")),2);
+                //double prixHT = Math.Round(float.Parse(node.SelectSingleNode("prixHT").InnerText.Replace(",", ".")),2);
+                double prixHT = Math.Round(double.Parse(node.SelectSingleNode("prixHT").InnerText), 2);
 
                 // add article to database
                 SQLiteCommand cmd;
