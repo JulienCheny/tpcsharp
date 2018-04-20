@@ -39,6 +39,14 @@ namespace Mercure
             listView1.Columns.Add("PrixHT", 70);
             listView1.Columns.Add("Quantite", 70);
 
+            refresh();
+        }
+
+        private void refresh()
+        {
+            listView1.Items.Clear();
+            listView1.Update();
+
             //Add items in the listview
             ListViewItem itm;
 
@@ -49,6 +57,8 @@ namespace Mercure
                 itm = new ListViewItem(article);
                 listView1.Items.Add(itm);
             }
+
+            listView1.Refresh();
         }
 
         private List<string[]> getArticles()
@@ -83,5 +93,30 @@ namespace Mercure
                 Console.WriteLine(refArticle);
             }
         }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (listView1.FocusedItem.Bounds.Contains(e.Location) == true)
+                {
+                    contextMenuStrip1.Show(Cursor.Position);
+                }
+            } 
+        }
+
+        protected override bool ProcessCmdKey (ref Message msg, Keys keyData)
+        {
+            bool bHandled = false;
+            switch (keyData)
+            {
+                case Keys.F5:
+                    refresh();
+                    bHandled = true;
+                    break;
+            }
+            return bHandled;
+        }
+
     }
 }
