@@ -90,7 +90,7 @@ namespace Mercure
             {
                 ListViewItem item = listView1.SelectedItems[0];
                 string refArticle = item.SubItems[0].Text;
-                Console.WriteLine(refArticle);
+                openUpdateArticleModal(refArticle);
             }
         }
 
@@ -118,5 +118,43 @@ namespace Mercure
             return bHandled;
         }
 
+        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = listView1.SelectedItems[0];
+            string refArticle = item.SubItems[0].Text;
+            openUpdateArticleModal(refArticle);
+        }
+
+        private void openUpdateArticleModal(string refArticle)
+        {
+            Console.WriteLine("Update Article " + refArticle);
+        }
+
+        private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = listView1.SelectedItems[0];
+            string refArticle = item.SubItems[0].Text;
+
+            var confirmDelete = MessageBox.Show("Voulez vous vraiment supprimer cet article ?", "Comfirmation", MessageBoxButtons.YesNo);
+            if (confirmDelete == DialogResult.Yes)
+            {
+                SQLiteConnection sqlite = new SQLiteConnection("Data source=/Dev/c++/tpcsharp/Mercure/Mercure.SQLite");
+                sqlite.Open();
+                SQLiteCommand cmd;
+                cmd = sqlite.CreateCommand();
+                cmd.CommandText = "DELETE FROM Articles WHERE RefArticle = @RefArticle";
+                cmd.Parameters.Add(new SQLiteParameter("@RefArticle", refArticle));
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    refresh();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                sqlite.Close();
+            }
+        }
     }
 }
