@@ -68,15 +68,15 @@ namespace Mercure
             sqlite.Open();
             SQLiteCommand cmd;
             cmd = sqlite.CreateCommand();
-            cmd.CommandText = "SELECT * FROM Articles";
+            cmd.CommandText = "SELECT RefArticle, Description, SousFamilles.Nom as NomSousFamille, Marques.Nom as NomMarque, PrixHT, Quantite FROM Articles INNER JOIN Marques ON Articles.RefMarque = Marques.RefMarque INNER JOIN SousFamilles ON SousFamilles.RefSousFamille = Articles.RefSousFamille";
             SQLiteDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 string[] articleArr = new string[6];
                 articleArr[0] = (string)reader["RefArticle"];
                 articleArr[1] = (string)reader["Description"];
-                articleArr[2] = ((int)reader["RefSousFamille"]).ToString();
-                articleArr[3] = ((int)reader["RefMArque"]).ToString();
+                articleArr[2] = (string)reader["NomSousFamille"];
+                articleArr[3] = (string)reader["NomMarque"];
                 articleArr[4] = ((double)reader["PrixHT"]).ToString();
                 articleArr[5] = ((int)reader["Quantite"]).ToString();
                 articles.Add(articleArr);
